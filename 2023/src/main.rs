@@ -23,6 +23,7 @@ fn main() {
     // There has to be a better way to do this
     match (day, part) {
         (1, 1) => days::day01::first(),
+        (1, 2) => days::day01::second(),
         _ => {
             print_usage();
             std::process::exit(1);
