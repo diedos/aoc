@@ -3,7 +3,7 @@ mod days;
 fn main() {
     let args: Vec<_> = std::env::args().collect();
 
-    if args.len() < 2 {
+    if args.len() < 3 {
         print_usage();
         std::process::exit(1);
     }
@@ -15,7 +15,7 @@ fn main() {
     });
 
     let part = args[2].parse::<u32>().unwrap_or_else(|_| {
-        println!("Invalid part: {}", args[1]);
+        println!("Invalid part: {}", args[2]);
         print_usage();
         std::process::exit(1);
     });
@@ -24,6 +24,7 @@ fn main() {
     match (day, part) {
         (1, 1) => days::day01::first(),
         (1, 2) => days::day01::second(),
+        (2, 1) => println!("Day 2, part 1: {}", days::day02::first(None)),
         _ => {
             print_usage();
             std::process::exit(1);
