@@ -75,18 +75,14 @@ pub fn second(input: Option<&str>) -> i32 {
     let green_regex = Regex::new(r"(\d+) green").unwrap();
     let blue_regex = Regex::new(r"(\d+) blue").unwrap();
 
-    let cubes: [i32; 3] = [12, 13, 14];
     let mut sum_of_powers: i32 = 0;
 
     let games = input.unwrap_or_else(|| include_str!("../../inputs/2.txt"));
 
     games.lines().into_iter().for_each(|line| {
         let game: Vec<&str> = line.trim().split(":").collect(); // ID: game[0], sets: game[1]
-        let game_id: i32 = game[0].split(" ").collect::<Vec<&str>>()[1]
-            .parse()
-            .unwrap();
+
         let sets: Vec<&str> = game[1].split(";").collect();
-        let mut possible = true;
 
         let mut max_found_cubes: [i32; 3] = [0, 0, 0];
 
