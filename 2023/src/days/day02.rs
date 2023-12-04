@@ -70,6 +70,73 @@ pub fn first(input: Option<&str>) -> i32 {
     sum_of_possible_ids
 }
 
+pub fn second(input: Option<&str>) -> i32 {
+    let red_regex = Regex::new(r"(\d+) red").unwrap();
+    let green_regex = Regex::new(r"(\d+) green").unwrap();
+    let blue_regex = Regex::new(r"(\d+) blue").unwrap();
+
+    let cubes: [i32; 3] = [12, 13, 14];
+    let mut sum_of_powers: i32 = 0;
+
+    let games = input.unwrap_or_else(|| include_str!("../../inputs/2.txt"));
+
+    games.lines().into_iter().for_each(|line| {
+        let game: Vec<&str> = line.trim().split(":").collect(); // ID: game[0], sets: game[1]
+        let game_id: i32 = game[0].split(" ").collect::<Vec<&str>>()[1]
+            .parse()
+            .unwrap();
+        let sets: Vec<&str> = game[1].split(";").collect();
+        let mut possible = true;
+
+        let mut max_found_cubes: [i32; 3] = [0, 0, 0];
+
+        for set in sets.into_iter() {
+            let red = red_regex.captures(set);
+            if red.is_some() {
+                let amount_of_reds = red
+                    .unwrap()
+                    .get(1)
+                    .unwrap()
+                    .as_str()
+                    .parse::<i32>()
+                    .unwrap();
+
+                max_found_cubes[0] = std::cmp::max(max_found_cubes[0], amount_of_reds);
+            }
+
+            let green = green_regex.captures(set);
+            if green.is_some() {
+                let amount_of_greens = green
+                    .unwrap()
+                    .get(1)
+                    .unwrap()
+                    .as_str()
+                    .parse::<i32>()
+                    .unwrap();
+
+                max_found_cubes[1] = std::cmp::max(max_found_cubes[1], amount_of_greens);
+            }
+
+            let blue = blue_regex.captures(set);
+            if blue.is_some() {
+                let amount_of_blues = blue
+                    .unwrap()
+                    .get(1)
+                    .unwrap()
+                    .as_str()
+                    .parse::<i32>()
+                    .unwrap();
+
+                max_found_cubes[2] = std::cmp::max(max_found_cubes[2], amount_of_blues);
+            }
+        }
+
+        sum_of_powers += max_found_cubes[0] * max_found_cubes[1] * max_found_cubes[2];
+    });
+
+    sum_of_powers
+}
+
 mod tests {
     #[test]
     fn first() {
@@ -79,5 +146,15 @@ mod tests {
         Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
         Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green";
         assert_eq!(super::first(Some(&input)), 8);
+    }
+
+    #[test]
+    fn second() {
+        let input = "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
+        Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
+        Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
+        Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
+        Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green";
+        assert_eq!(super::second(Some(&input)), 2286);
     }
 }

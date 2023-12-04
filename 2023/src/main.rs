@@ -25,6 +25,7 @@ fn main() {
         (1, 1) => days::day01::first(),
         (1, 2) => days::day01::second(),
         (2, 1) => println!("Day 2, part 1: {}", days::day02::first(None)),
+        (2, 2) => println!("Day 2, part 2: {}", days::day02::second(None)),
         _ => {
             print_usage();
             std::process::exit(1);
@@ -35,6 +36,6 @@ fn main() {
 }
 
 fn print_usage() {
-    println!("Usage: aoc2023 <day> <part> <input>");
-    println!("Example: aoc2023 1 1 pqr3stu8vwx");
+    println!("Usage: aoc2023 <day> <part>");
+    println!("Example: aoc2023 1 1");
 }
